@@ -1,10 +1,10 @@
-ecabcd6c3a2af1b4b166c6dc86a4ad78 *DESCRIPTION
-dc976f9b03fa834eea289ac134123867 *NAMESPACE
+52a1b2831ef440678e9f5de8d8d28063 *DESCRIPTION
+ab85c06da033b07118d1ac357a1cdc95 *NAMESPACE
 34551541b76b9857f090519e5b6e344a *R/CellCycleX.R
 d407264fb7822c2e8de1e63fee521573 *R/CellCycleY.R
 b493132eb7a9235b4591dbd60817128e *R/DLBCL.R
 041261c0f76e726338c1e564751d1f97 *R/RcppExports.R
-d816c0474f408d7214c05b6de561327c *R/secure.R
+f7d4b410dcfa467f9bdeae02783832d7 *R/secure.R
 e5f704d7a5b058fed92dc35c12e8d12d *data/CellCycleX.RData
 2f2fcaba7c7ba1eecc0dc3cd56880a7c *data/CellCycleY.RData
 982f4b7b1453cb21e03eb051d12f5a6c *data/DLBCL.RData
@@ -17,8 +17,8 @@ fceba1c2691ef76c7ad26cd2ff7d5124 *man/rfit.Rd
 ce4f2ed74cd23215e443228ddc61439c *man/secure.control.Rd
 5fcd9c03520c1961f54b9c176dfd32cd *man/secure.init.Rd
 0fe376186f766295292a3b5624977be9 *man/secure.miss.init.Rd
-169de7d9b4c06ddad507b2d32649f575 *man/secure.path.Rd
-1a664f4bc0d423fa35afb79e9d24d6ea *man/secure.sim.Rd
+9ce32ec5eedb85e6aa0fac20e290bacc *man/secure.path.Rd
+d9a63b5840f9f894feff27381c6b339b *man/secure.sim.Rd
 d9358122f7847d1fbb22efd8efff3d1d *man/sefar_SURR_Rcpp.Rd
 a6178d8c71068f8242f9a79d4898884a *man/sefar_SURR_Rcpp_ortho.Rd
 48eb5ca1e0928aff7af00a92bb9b4c6b *man/sefar_SURR_miss_Rcpp.Rd
@@ -26,4 +26,4 @@ bb15af02acae3d0d8bb5a6aa814d1c0a *src/Makevars
 2a6f9e9e044a78154d3cfda5936d6f48 *src/Makevars.win
 1f27e41d581dde4a4ad4fb3c553419e6 *src/RcppExports.cpp
 7c22b1b500cab25872924e218f1645f5 *src/secure_init.c
-8aeee2c6e01a97420af03908cd6ba0fb *src/sefar_SURR_fit.cpp
+b0d16c52491fe2162c0564afd8b048fb *src/sefar_SURR_fit.cpp

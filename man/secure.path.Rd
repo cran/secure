@@ -3,11 +3,11 @@
 \name{secure.path}
 \alias{secure}
 \alias{secure.path}
-\title{Sequential Co-Sparse Factor Regression (secure)}
+\title{Sequential Co-Sparse Factor Regression (SeCURE)}
 \usage{
 secure.path(Y, X = NULL, nrank = 3, nlambda = 100, U0 = NULL,
   V0 = NULL, D0 = NULL, orthXU = FALSE, orthV = FALSE,
-  keepPath = TRUE, control = list())
+  keepPath = TRUE, control = list(), ic = c("GIC", "BICP", "AIC")[1])
 }
 \arguments{
 \item{Y}{response matrix}
@@ -31,6 +31,8 @@ secure.path(Y, X = NULL, nrank = 3, nlambda = 100, U0 = NULL,
 \item{keepPath}{if TRUE, th solution paths of U, V, D are reported}
 
 \item{control}{a list of internal parameters controlling the model fitting}
+
+\item{ic}{character specifying which information criterion to use to select the best: "GIC"(default), "BICP", and "AIC"}
 }
 \value{
 \item{C.est}{estimated coefficient matrix; based on modified BIC}
@@ -50,7 +52,7 @@ secure.path(Y, X = NULL, nrank = 3, nlambda = 100, U0 = NULL,
   \item{Vpath}{solution path of D}
 }
 \description{
-Compute solution path of sparse factor regression with secure
+Sequential factor extraction via co-sparse unit-rank estimation (SeCURE)
 }
 \examples{
 #require(secure)
@@ -111,6 +113,8 @@ y <- as.vector(Y); y[t.ind] <- NA;  Ym <- matrix(y,n,q)
 fit.orthF.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda, 
                              orthXU = FALSE, orthV = FALSE, control = control) 
 # fit.orthT.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda, control = control)
-
+}
+\references{
+Mishra, A., Chen, K., & Dey, D. (2017) \emph{ Sequential Co-Sparse Factor Regression, To appear in Journal of Computational and Graphical Statistics (JCGS)}
 }
 

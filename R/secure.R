@@ -1,6 +1,6 @@
-#' Sequential Co-Sparse Factor Regression (secure)
+#' Sequential Co-Sparse Factor Regression (SeCURE)
 #'
-#' Compute solution path of sparse factor regression with secure
+#' Sequential factor extraction via co-sparse unit-rank estimation (SeCURE)
 #'
 #' @param Y response matrix
 #' @param X covariate matrix; when X = NULL, the fucntion performs unsupervised learning
@@ -13,6 +13,7 @@
 #' @param orthV if TRUE, orthogonality of V is required
 #' @param keepPath if TRUE, th solution paths of U, V, D are reported
 #' @param control a list of internal parameters controlling the model fitting
+#' @param ic character specifying which information criterion to use to select the best: "GIC"(default), "BICP", and "AIC"
 #' @aliases secure
 #' @return 
 #'   \item{C.est}{estimated coefficient matrix; based on modified BIC}
@@ -92,17 +93,20 @@
 #' fit.orthF.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda, 
 #'                              orthXU = FALSE, orthV = FALSE, control = control) 
 #' # fit.orthT.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda, control = control)
-#'
+#'@references 
+#' Mishra, A., Chen, K., & Dey, D. (2017) \emph{ Sequential Co-Sparse Factor Regression, To appear in Journal of Computational and Graphical Statistics (JCGS)}
 secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100, 
                        U0 = NULL, V0 = NULL, D0 = NULL, 
                        orthXU = FALSE, orthV = FALSE, 
-                       keepPath = TRUE,
-                       control = list()){
+                       keepPath = TRUE, control = list(),
+                       ic = c("GIC","BICP", "AIC")[1]){
   # control <- secure.control()
   # U0 = NULL; V0 = NULL; D0 = NULL
   # nlambda = 100;orthXU=TRUE;orthV=TRUE
   # check for orthogonality 
   control <- do.call("secure.control", control)
+  ic <- match.arg(ic, c("GIC","BICP", "AIC"))
+  IC <- match(ic, c("GIC","BICP", "AIC"))
   
   cat("Initializing...", "\n")
   
@@ -123,7 +127,7 @@ secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100,
     }
     
   ## Solution path
-  ICpath <- array(dim=c(3,nlambda+1,nrank),NA)   ## 3 corresponds to BIC, BICP, AIC
+  ICpath <- array(dim=c(4,nlambda+1,nrank),NA)   ## 3 corresponds to BIC, BICP, GIC, AIC
   lampath <- matrix(nrow=nlambda+1, ncol=nrank,NA)
   ExcutTimepath <- matrix(nrow=nlambda+1, ncol=nrank,NA)
   lamCountpath <- rep(NA, nrank)
@@ -174,7 +178,7 @@ secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100,
     # Storing solution path variable 
     nlamk <- fit.layer$nkpath
     lamCountpath[k] <- nlamk
-    ICpath[,1:nlamk,k] <- fit.layer$ICkpath[,1:nlamk]   ## 3 corresponds to BIC, BICP, AIC
+    ICpath[,1:nlamk,k] <- fit.layer$ICkpath[,1:nlamk]   ## 4 corresponds to BIC, BICP, GIC, AIC
     lampath[1:nlamk,k] <- fit.layer$lamkpath[1:nlamk]
     ExcutTimepath[1:nlamk,k]  <- fit.layer$ExecTimekpath[1:nlamk]
     
@@ -182,8 +186,17 @@ secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100,
     Vpath[,1:nlamk,k] <- fit.layer$vkpath[,1:nlamk]
     Dpath[1:nlamk,k] <- fit.layer$dkpath[1:nlamk] 
     
-    # selection of solution 
-    if(p<n) ind.select <- which.min(ICpath[1,1:nlamk,k]) else ind.select <- which.min(ICpath[2,1:nlamk,k])
+    # model selection of solution 
+    if(IC == 1){
+      if(p<n) ind.select <- which.min(ICpath[1,1:nlamk,k]) else ind.select <- which.min(ICpath[3,1:nlamk,k])
+    } else if(IC == 2){
+      if(p<n) ind.select <- which.min(ICpath[1,1:nlamk,k]) else ind.select <- which.min(ICpath[2,1:nlamk,k])
+    } else { # "AIC"
+      ind.select <- which.min(ICpath[4,1:nlamk,k]) 
+    }
+
+    
+    # if(p<n) ind.select <- which.min(ICpath[1,1:nlamk,k]) else ind.select <- which.min(ICpath[2,1:nlamk,k])
     
     cat("factor", k, 
         ":  #lambdas fitted =", nlamk, 
@@ -250,6 +263,7 @@ secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100,
 #' @param n sample size
 #' @param snr signal to noise ratio
 #' @param Xsigma covariance matrix for generating sample of X
+#' @param rho parameter defining correlated error
 #' @return 
 #'   \item{Y}{Generated response matrix}
 #'   \item{X}{Generated predictor matrix}
@@ -282,7 +296,7 @@ secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100,
 #' Y <- sim.sample$Y
 #' X <- sim.sample$X
 #' 
-secure.sim = function(U,D,V,n,snr,Xsigma){
+secure.sim = function(U,D,V,n,snr,Xsigma,rho=0){
   
   ## finding basis along more number of columns of data vector 
   basis.vec =function(x){
@@ -319,8 +333,12 @@ secure.sim = function(U,D,V,n,snr,Xsigma){
   X <- t(solve(t(P))%*%rbind(X1,X2))#/sqrt(n)
   # crossprod(X%*%U)
   
+  svdrr <- eigen(rho^abs(outer(1:q, 1:q,FUN="-")))
+  svdrrinv <- svdrr$vectors%*%diag(svdrr$values^0.5,nrow=q)%*%t(svdrr$vectors)
   
-  UU <- matrix(nrow=n,ncol=q,rnorm(n*q,0,1))
+  UU <- matrix(nrow=n,ncol=q,rnorm(n*q,0,1))%*%svdrrinv
+  
+  # UU <- matrix(nrow=n,ncol=q,rnorm(n*q,0,1))
   C <- U%*%D%*%t(V)
   Y3 <- X%*%U[,nrank]%*%t(V[,nrank])*D[nrank,nrank]
   sigma <- sqrt(sum(Y3^2)/sum(UU^2))/snr    ## recheck 
@@ -492,7 +510,7 @@ secure.miss.init = function (Y, X, U0 = NULL, V0 = NULL, D0 = NULL, nrank, contr
   }
   Yk <- apply(Yk,2,f)
   
-  U0 <- V0 <- D0 <- NULL
+  # U0 <- V0 <- D0 <- NULL
   U <- V <- D <- NULL
   if(is.null(U0) | is.null(V0) | is.null(D0)){
     Ck <- rfit(Yk,X,nrank=nrank)$coef

@@ -268,7 +268,7 @@ Rcpp::List sefar_SURR_Rcpp(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, 
 
   arma::mat Uklam,Vklam, BIClam;
   arma::vec Dklam,lselectSeq,execTime;
-  Uklam.zeros(p,nlambda+1);Vklam.zeros(q,nlambda+1);BIClam.zeros(3,nlambda+1);
+  Uklam.zeros(p,nlambda+1);Vklam.zeros(q,nlambda+1);BIClam.zeros(4,nlambda+1);
   Dklam.zeros(nlambda+1);  lselectSeq.zeros(nlambda+1);execTime.zeros(nlambda+1);
   int outMaxIter = control["outMaxIter"],ii=0,i,j;
   double lam, SSE, df,lamv2,elp;
@@ -279,7 +279,8 @@ Rcpp::List sefar_SURR_Rcpp(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, 
   SSE = log(pow(norm(Y,"fro"),2)) ;
   BIClam(0,ii) = SSE; //BIC
   BIClam(1,ii) = SSE; //BICP
-  BIClam(2,ii) = SSE; //AIC
+  BIClam(2,ii) = SSE; //GIC
+  BIClam(3,ii) = SSE; //AIC
   wall_clock timer;
 
   for(j = 0; j < nlambda; j++){
@@ -313,7 +314,7 @@ Rcpp::List sefar_SURR_Rcpp(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, 
         if (suk == 0) {
             chuk = 0;lselectSeq(0) = lam;break;
         } else {
-            dk = as_scalar(sqrt(Ukest.t()*XX*Ukest ))/sqrt(n);
+            dk = as_scalar(sqrt(Ukest.t()*XX*Ukest ))/sqrt((double) n);
             uk = Ukest/dk;
             chuk = 1;
         }
@@ -362,9 +363,10 @@ Rcpp::List sefar_SURR_Rcpp(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, 
         df = accu(uk != 0) + accu(vk != 0) -1;
         lselectSeq(ii) = lam;
 
-        BIClam(0,ii) = SSE + (df*log(q*n))/(q*n); //BIC
-        BIClam(1,ii) = SSE + log(log(n*q))*df*log(p*q)/(q*n); //2*df*log(p*q)/(q*n); //BICP
-        BIClam(2,ii) = SSE + 2/q/n*(df); //AIC
+        BIClam(0,ii) = SSE + (df*log((double) q*n))/(q*n); //BIC
+        BIClam(1,ii) = SSE + 2*df*log((double) p*q)/(q*n); //BICP
+        BIClam(2,ii) = SSE + log(log((double) n*q))*df*log((double) p*q)/(q*n); //GIC 
+        BIClam(3,ii) = SSE + 2/q/n*(df); //AIC
       }
 
     if( (i>1) && ((nzcount(uk) > (p*spu)) || (nzcount(vk) > (q*spv)))  ) {break;}
@@ -456,7 +458,7 @@ Rcpp::List sefar_SURR_Rcpp_ortho(arma::mat X, arma::mat Y,arma::mat Au, arma::ma
 
   arma::mat Uklam,Vklam, BIClam;
   arma::vec Dklam,lselectSeq,execTime;
-  Uklam.zeros(p,nlambda+1);Vklam.zeros(q,nlambda+1);BIClam.zeros(3,nlambda+1);
+  Uklam.zeros(p,nlambda+1);Vklam.zeros(q,nlambda+1);BIClam.zeros(4,nlambda+1);
   Dklam.zeros(nlambda+1);  lselectSeq.zeros(nlambda+1);execTime.zeros(nlambda+1);
   int outMaxIter = control["outMaxIter"],ii=0,i,j;
   double lam, SSE, df,lamv2,elp;
@@ -467,7 +469,8 @@ Rcpp::List sefar_SURR_Rcpp_ortho(arma::mat X, arma::mat Y,arma::mat Au, arma::ma
   SSE = log(pow(norm(Y,"fro"),2)) ;
   BIClam(0,ii) = SSE; //BIC
   BIClam(1,ii) = SSE; //BICP
-  BIClam(2,ii) = SSE; //AIC
+  BIClam(2,ii) = SSE; //GIC
+  BIClam(3,ii) = SSE; //AIC
   wall_clock timer;
 
   for(j = 0; j < nlambda; j++){
@@ -500,7 +503,7 @@ Rcpp::List sefar_SURR_Rcpp_ortho(arma::mat X, arma::mat Y,arma::mat Au, arma::ma
         if (suk == 0) {
             chuk = 0;lselectSeq(0) = lam;break;
         } else {
-            dk = as_scalar(sqrt(Ukest.t()*(XX % Ukest) ))/sqrt(n);
+            dk = as_scalar(sqrt(Ukest.t()*(XX % Ukest) ))/sqrt((double) n);
             uk = Ukest/dk;
             chuk = 1;
         }
@@ -548,9 +551,10 @@ Rcpp::List sefar_SURR_Rcpp_ortho(arma::mat X, arma::mat Y,arma::mat Au, arma::ma
         df = accu(uk != 0) + accu(vk != 0) -1;
         lselectSeq(ii) = lam;
 
-        BIClam(0,ii) = SSE + (df*log(q*n))/(q*n); //BIC
-        BIClam(1,ii) = SSE + log(log(n*q))*df*log(p*q)/(q*n); //2*df*log(p*q)/(q*n); //BICP
-        BIClam(2,ii) = SSE + 2/q/n*(df); //AIC
+        BIClam(0,ii) = SSE + (df*log((double) q*n))/(q*n); //BIC
+        BIClam(1,ii) = SSE + 2*df*log((double) p*q)/(q*n); //BICP
+        BIClam(2,ii) = SSE + log(log((double) n*q))*df*log((double) p*q)/(q*n); //GIC 
+        BIClam(3,ii) = SSE + 2/q/n*(df); //AIC
       }
 
       if( (i>1) && ((nzcount(uk) > (p*spu)) || (nzcount(vk) > (q*spv)))  ) {break;}
@@ -642,7 +646,7 @@ Rcpp::List sefar_SURR_miss_Rcpp(arma::mat X, arma::mat Y,arma::mat  naInd,arma::
 
   arma::mat Uklam,Vklam, BIClam;
   arma::vec Dklam,lselectSeq,execTime;
-  Uklam.zeros(p,nlambda+1);Vklam.zeros(q,nlambda+1);BIClam.zeros(3,nlambda+1);
+  Uklam.zeros(p,nlambda+1);Vklam.zeros(q,nlambda+1);BIClam.zeros(4,nlambda+1);
   Dklam.zeros(nlambda+1);  lselectSeq.zeros(nlambda+1);execTime.zeros(nlambda+1);
   int outMaxIter = control["outMaxIter"],ii=0,i,j;
   double lam, SSE, df,lamv2,elp;
@@ -653,7 +657,8 @@ Rcpp::List sefar_SURR_miss_Rcpp(arma::mat X, arma::mat Y,arma::mat  naInd,arma::
   SSE = log(accu(square(Y))) ;
   BIClam(0,ii) = SSE; //BIC
   BIClam(1,ii) = SSE; //BICP
-  BIClam(2,ii) = SSE; //AIC
+  BIClam(2,ii) = SSE; //GIC
+  BIClam(3,ii) = SSE; //AIC
   wall_clock timer;
 
   for(j = 0; j < nlambda; j++){
@@ -689,7 +694,7 @@ Rcpp::List sefar_SURR_miss_Rcpp(arma::mat X, arma::mat Y,arma::mat  naInd,arma::
         if (suk == 0) {
             chuk = 0;lselectSeq(0) = lam;break;
         } else {
-            dk = as_scalar(sqrt(accu(square(X*Ukest))))/sqrt(n);    //as_scalar(sqrt(Ukest.t()*XX*Ukest ));
+            dk = as_scalar(sqrt(accu(square(X*Ukest))))/sqrt((double) n);    //as_scalar(sqrt(Ukest.t()*XX*Ukest ));
             uk = Ukest/dk;
             chuk = 1;
         }
@@ -737,9 +742,10 @@ Rcpp::List sefar_SURR_miss_Rcpp(arma::mat X, arma::mat Y,arma::mat  naInd,arma::
         df = accu(uk != 0) + accu(vk != 0) -1;
         lselectSeq(ii) = lam;
 
-        BIClam(0,ii) = SSE + (df*log(q*n))/(q*n); //BIC
-        BIClam(1,ii) = SSE + log(log(n*q))*df*log(p*q)/(q*n); //2*df*log(p*q)/(q*n); //BICP
-        BIClam(2,ii) = SSE + 2/q/n*(df); //AIC
+        BIClam(0,ii) = SSE + (df*log((double) q*n))/(q*n); //BIC
+        BIClam(1,ii) = SSE + 2*df*log((double) p*q)/(q*n); //BICP
+        BIClam(2,ii) = SSE + log(log((double) n*q))*df*log((double) p*q)/(q*n); //GIC 
+        BIClam(3,ii) = SSE + 2/q/n*(df); //AIC
       }
 
       if( (i>1) && ((nzcount(uk) > (p*spu)) || (nzcount(vk) > (q*spv)))  ) {break;}

@@ -4,7 +4,7 @@
 \alias{secure.sim}
 \title{Simulation model}
 \usage{
-secure.sim(U, D, V, n, snr, Xsigma)
+secure.sim(U, D, V, n, snr, Xsigma, rho = 0)
 }
 \arguments{
 \item{U}{specified value of U}
@@ -18,6 +18,8 @@ secure.sim(U, D, V, n, snr, Xsigma)
 \item{snr}{signal to noise ratio}
 
 \item{Xsigma}{covariance matrix for generating sample of X}
+
+\item{rho}{parameter defining correlated error}
 }
 \value{
 \item{Y}{Generated response matrix}
