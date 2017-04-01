@@ -1,3 +1,5 @@
+
+
 #' Sequential Co-Sparse Factor Regression
 #'
 #' Sequential factor extraction via co-sparse unit-rank estimation (SeCURE)
@@ -162,16 +164,16 @@ secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100,
     }
     if(missInd) {
       Yk[!naInd] <- 0
-      fit.layer <- sefar_SURR_miss_Rcpp(X, Yk,naInd+0,Au, Av, bu, bv, uk,vk,dk, nlambda,control)
+      fit.layer <- secure_SURR_miss_Rcpp(X, Yk,naInd+0,Au, Av, bu, bv, uk,vk,dk, nlambda,control)
 #       
 #       Yk[!naInd] <- NA
 #       lay.est <- surr.sea.breg.missing.elpen(FALSE,k,X,Yk,Au,Av,bu,bv,ini$U0,ini$V0,diag(ini$D0),param)
       
     } else {
       if(ort){
-        fit.layer <- sefar_SURR_Rcpp_ortho(X, Yk, Au, Av, bu, bv, uk, vk, dk, nlambda, control)
+        fit.layer <- secure_SURR_Rcpp_ortho(X, Yk, Au, Av, bu, bv, uk, vk, dk, nlambda, control)
       } else {
-        fit.layer <- sefar_SURR_Rcpp(X, Yk, Au, Av, bu, bv, uk, vk, dk, nlambda, control)
+        fit.layer <- secure_SURR_Rcpp(X, Yk, Au, Av, bu, bv, uk, vk, dk, nlambda, control)
       }
     }
 
@@ -433,23 +435,23 @@ rfit <- function(Y,X,nrank=nrank){
 
 
 
-#' Initialization (internal)
-#' 
-#' initialization for secure, when no missingness in Y
-#' 
-#' @param Y response matrix
-#' @param X covariate matrix
-#' @param U0 user-supplied initial value of U
-#' @param V0 user-supplied initial value of V
-#' @param D0 user-supplied initial value of D
-#' @param nrank an integer specifying the desired rank
-#' @param ort if TRUE, X is treated as orthogonal
-#' @return
-#'   \item{C_ls}{least square estimate}
-#'   \item{C_rr}{reduced rank estimate}
-#'   \item{U0}{initial value of U}
-#'   \item{D0}{Initial value of D}
-#'   \item{V0}{Initial value of V}
+## Initialization (internal)
+## 
+## initialization for secure, when no missingness in Y
+## 
+## @param Y response matrix
+## @param X covariate matrix
+## @param U0 user-supplied initial value of U
+## @param V0 user-supplied initial value of V
+## @param D0 user-supplied initial value of D
+## @param nrank an integer specifying the desired rank
+## @param ort if TRUE, X is treated as orthogonal
+## @return
+##   \item{C_ls}{least square estimate}
+##   \item{C_rr}{reduced rank estimate}
+##   \item{U0}{initial value of U}
+##   \item{D0}{Initial value of D}
+##   \item{V0}{Initial value of V}
 secure.init <- function(Y, X, U0 = NULL, V0 = NULL, D0 = NULL,nrank = 4,ort) {
   p <- ncol(X);  q <- ncol(Y);  n <- nrow(Y)
   if(ort){
@@ -481,25 +483,25 @@ secure.init <- function(Y, X, U0 = NULL, V0 = NULL, D0 = NULL,nrank = 4,ort) {
 }
 
 
-#' Initialization (internal)
-#'
-#' initialization for secure when Y contains missing value
-#'
-#'
-#' @param Y response matrix
-#' @param X covariate matrix
-#' @param U0 user-supplied initial value of U. Currently not used.
-#' @param V0 user-supplied initial value of V. Currently not used.
-#' @param D0 user-supplied initial value of D. Currently not used.
-#' @param nrank an integer specifying the desired rank
-#' @param control internal control parameters
-#' @param method method = 1, least squares; method = 2, reduced rank regression 
-#' @return 
-#'   \item{C_ls}{least square estimate}
-#'   \item{C_rr}{reduced rank estimate}
-#'   \item{U0}{initial value of U}
-#'   \item{D0}{Initial value of D}
-#'   \item{V0}{Initial value of V}
+## Initialization (internal)
+## 
+## initialization for secure when Y contains missing value
+## 
+## 
+## @param Y response matrix
+## @param X covariate matrix
+## @param U0 user-supplied initial value of U. Currently not used.
+## @param V0 user-supplied initial value of V. Currently not used.
+## @param D0 user-supplied initial value of D. Currently not used.
+## @param nrank an integer specifying the desired rank
+## @param control internal control parameters
+## @param method method = 1, least squares; method = 2, reduced rank regression 
+## @return 
+##   \item{C_ls}{least square estimate}
+##   \item{C_rr}{reduced rank estimate}
+##   \item{U0}{initial value of U}
+##   \item{D0}{Initial value of D}
+##   \item{V0}{Initial value of V}
 secure.miss.init = function (Y, X, U0 = NULL, V0 = NULL, D0 = NULL, nrank, control = list(), method = 1){  
   ## D0 is assumed not diagonal 
   n <- nrow(X);  p <- ncol(X) ;  q <- ncol(Y)  

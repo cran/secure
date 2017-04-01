@@ -46,19 +46,19 @@ double softThres(double x, double lambda) {
          (x < -lambda) ? x + lambda : 0.);
 }
 
-//' Linear constrained Penalized regression with elastic net penalty
-//'
-//' @param XY X'Y where X is covariance matrix and Y response vector
-//' @param XX  X'X where X is covariance matrix
-//' @param A linear constraint parameter A
-//' @param B linear constraint parameter
-//' @param Lambda1 lasso penalty parameter
-//' @param Lambda2 elastic net penalty parameter
-//' @param Mu linear constraint strength
-//' @param Nu multiplicative factor for linear constraint strength
-//' @param Beta0 initial value of regression coefficient vector
-//' @param control a list of parameters controling the fitting process
-//' @return estimated regression coefficient vector
+//  Linear constrained Penalized regression with elastic net penalty
+//
+//  #@param XY X'Y where X is covariance matrix and Y response vector
+//  #@param XX  X'X where X is covariance matrix
+//  #@param A linear constraint parameter A
+//  #@param B linear constraint parameter
+//  #@param Lambda1 lasso penalty parameter
+//  #@param Lambda2 elastic net penalty parameter
+//  #@param Mu linear constraint strength
+//  #@param Nu multiplicative factor for linear constraint strength
+//  #@param Beta0 initial value of regression coefficient vector
+//  #@param control a list of parameters controling the fitting process
+//  #@return estimated regression coefficient vector
 // [[Rcpp::export]]
 arma::vec bregpcdenet_Rcpp(arma::vec XY, arma::mat XX, arma::mat A, arma::vec B,
                            arma::vec Lambda1, arma::vec Lambda2,double Mu, double Nu,
@@ -122,19 +122,19 @@ arma::vec bregpcdenet_Rcpp(arma::vec XY, arma::mat XX, arma::mat A, arma::vec B,
 
 
 
-//' Linear constrained Penalized regression with elastic net penalty when X is orthogonal
-//'
-//' @param XY X'Y where X is covariance matrix and Y response vector
-//' @param XX  X'X where X is covariance matrix
-//' @param A linear constraint parameter A
-//' @param B linear constraint parameter
-//' @param Lambda1 lasso penalty parameter
-//' @param Lambda2 elastic net penalty parameter
-//' @param Mu linear constraint strength
-//' @param Nu multiplicative factor for linear constraint strength
-//' @param Beta0 initial value of regression coefficient vector
-//' @param control a list of parameters controling the fitting process
-//' @return estimated regression coefficient vector
+//  Linear constrained Penalized regression with elastic net penalty when X is orthogonal
+//
+//  #@param XY X'Y where X is covariance matrix and Y response vector
+//  #@param XX  X'X where X is covariance matrix
+//  #@param A linear constraint parameter A
+//  #@param B linear constraint parameter
+//  #@param Lambda1 lasso penalty parameter
+//  #@param Lambda2 elastic net penalty parameter
+//  #@param Mu linear constraint strength
+//  #@param Nu multiplicative factor for linear constraint strength
+//  #@param Beta0 initial value of regression coefficient vector
+//  #@param control a list of parameters controling the fitting process
+//  #@return estimated regression coefficient vector
 // [[Rcpp::export]]
 arma::vec bregpcdenetdiag_Rcpp(arma::vec XY, arma::vec XX, arma::mat A, arma::vec B,
                                arma::vec Lambda1, arma::vec Lambda2,double Mu, double Nu,
@@ -199,21 +199,22 @@ arma::vec bregpcdenetdiag_Rcpp(arma::vec XY, arma::vec XX, arma::mat A, arma::ve
 
 
 
-//' Sparse unit-rank regression, Rcpp version
-//' @param X covariate matrix
-//' @param Y response matrix
-//' @param Au responsible for orthogonality constraint on XU
-//' @param Av responsible for orthogonality constraint on V
-//' @param bu responsible for orthogonality constraint on XU
-//' @param bv responsible for orthogonality constraint on V
-//' @param uk initial value of kth column of U
-//' @param vk initial value of kth column of V
-//' @param dk initial value of kth diagonal value of D
-//' @param nlambda number of lambda to be specified in solution path
-//' @param control a list of parameters controlling the fitting process
-//' @return S3 \code{sefar_SURR_Rcpp} object .....
+//  Sparse unit-rank regression, Rcpp version
+//  
+//  #@param X covariate matrix
+//  #@param Y response matrix
+//  #@param Au responsible for orthogonality constraint on XU
+//  #@param Av responsible for orthogonality constraint on V
+//  #@param bu responsible for orthogonality constraint on XU
+//  #@param bv responsible for orthogonality constraint on V
+//  #@param uk initial value of kth column of U
+//  #@param vk initial value of kth column of V
+//  #@param dk initial value of kth diagonal value of D
+//  #@param nlambda number of lambda to be specified in solution path
+//  #@param control a list of parameters controlling the fitting process
+//  #@return S3 \code{secure_SURR_Rcpp} object .....
 // [[Rcpp::export]]
-Rcpp::List sefar_SURR_Rcpp(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv,
+Rcpp::List secure_SURR_Rcpp(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv,
                          arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control){
 
   int p = X.n_cols;
@@ -390,21 +391,21 @@ Rcpp::List sefar_SURR_Rcpp(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, 
 
 
 
-//' Sparse unit-rank regression when X is orthogonal, Rcpp version
-//' @param X covariate matrix
-//' @param Y response matrix
-//' @param Au responsible for orthogonality constraint on XU
-//' @param Av responsible for orthogonality constraint on V
-//' @param bu responsible for orthogonality constraint on XU
-//' @param bv responsible for orthogonality constraint on V
-//' @param uk initial value of kth column of U
-//' @param vk initial value of kth column of V
-//' @param dk initial value of kth diagonal value of D
-//' @param nlambda number of lambda to be specified in solution path
-//' @param control a list of parameters controlling the fitting process
-//' @return S3 \code{sefar_SURR_Rcpp_ortho} object .....
+//  Sparse unit-rank regression when X is orthogonal, Rcpp version
+//  #@param X covariate matrix
+//  #@param Y response matrix
+//  #@param Au responsible for orthogonality constraint on XU
+//  #@param Av responsible for orthogonality constraint on V
+//  #@param bu responsible for orthogonality constraint on XU
+//  #@param bv responsible for orthogonality constraint on V
+//  #@param uk initial value of kth column of U
+//  #@param vk initial value of kth column of V
+//  #@param dk initial value of kth diagonal value of D
+//  #@param nlambda number of lambda to be specified in solution path
+//  #@param control a list of parameters controlling the fitting process
+//  #@return S3 \code{secure_SURR_Rcpp_ortho} object .....
 // [[Rcpp::export]]
-Rcpp::List sefar_SURR_Rcpp_ortho(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv,
+Rcpp::List secure_SURR_Rcpp_ortho(arma::mat X, arma::mat Y,arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv,
                            arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control){
 
   int p = X.n_cols;
@@ -578,22 +579,22 @@ Rcpp::List sefar_SURR_Rcpp_ortho(arma::mat X, arma::mat Y,arma::mat Au, arma::ma
 
 
 
-//' Sparse unit-rank regression when missing entries in Y, Rcpp version
-//' @param X covariate matrix
-//' @param Y response matrix
-//' @param naInd Missing entries indicator matrix
-//' @param Au responsible for orthogonality constraint on XU
-//' @param Av responsible for orthogonality constraint on V
-//' @param bu responsible for orthogonality constraint on XU
-//' @param bv responsible for orthogonality constraint on V
-//' @param uk initial value of kth column of U
-//' @param vk initial value of kth column of V
-//' @param dk initial value of kth diagonal value of D
-//' @param nlambda number of lambda to be specified in solution path
-//' @param control a list of parameters controlling the fitting process
-//' @return S3 \code{sefar_SURR_miss_Rcpp} object .....
+//  Sparse unit-rank regression when missing entries in Y, Rcpp version
+//  #@param X covariate matrix
+//  #@param Y response matrix
+//  #@param naInd Missing entries indicator matrix
+//  #@param Au responsible for orthogonality constraint on XU
+//  #@param Av responsible for orthogonality constraint on V
+//  #@param bu responsible for orthogonality constraint on XU
+//  #@param bv responsible for orthogonality constraint on V
+//  #@param uk initial value of kth column of U
+//  #@param vk initial value of kth column of V
+//  #@param dk initial value of kth diagonal value of D
+//  #@param nlambda number of lambda to be specified in solution path
+//  #@param control a list of parameters controlling the fitting process
+//  #@return S3 \code{secure_SURR_miss_Rcpp} object .....
 // [[Rcpp::export]]
-Rcpp::List sefar_SURR_miss_Rcpp(arma::mat X, arma::mat Y,arma::mat  naInd,arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv,
+Rcpp::List secure_SURR_miss_Rcpp(arma::mat X, arma::mat Y,arma::mat  naInd,arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv,
                            arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control){
 
   int p = X.n_cols;

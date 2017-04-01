@@ -1,7 +1,7 @@
 Package: secure
 Type: Package
 Title: Sequential Co-Sparse Factor Regression
-Version: 0.3
+Version: 0.4
 Date: 2017-03-24
 Author: Aditya Mishra [aut, cre], Kun Chen [aut, cre]
 Maintainer: Aditya Mishra <aditya.mishra@uconn.edu>
@@ -13,6 +13,6 @@ LazyData: TRUE
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
 RoxygenNote: 5.0.1
-Packaged: 2017-04-01 13:28:37 UTC; Aditya
+Packaged: 2017-04-01 20:38:25 UTC; Aditya
 Repository: CRAN
-Date/Publication: 2017-04-01 15:41:37 UTC
+Date/Publication: 2017-04-01 21:21:29 UTC

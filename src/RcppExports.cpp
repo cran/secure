@@ -81,9 +81,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sefar_SURR_Rcpp
-Rcpp::List sefar_SURR_Rcpp(arma::mat X, arma::mat Y, arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv, arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control);
-RcppExport SEXP secure_sefar_SURR_Rcpp(SEXP XSEXP, SEXP YSEXP, SEXP AuSEXP, SEXP AvSEXP, SEXP buSEXP, SEXP bvSEXP, SEXP ukSEXP, SEXP vkSEXP, SEXP dkSEXP, SEXP nlambdaSEXP, SEXP controlSEXP) {
+// secure_SURR_Rcpp
+Rcpp::List secure_SURR_Rcpp(arma::mat X, arma::mat Y, arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv, arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control);
+RcppExport SEXP secure_secure_SURR_Rcpp(SEXP XSEXP, SEXP YSEXP, SEXP AuSEXP, SEXP AvSEXP, SEXP buSEXP, SEXP bvSEXP, SEXP ukSEXP, SEXP vkSEXP, SEXP dkSEXP, SEXP nlambdaSEXP, SEXP controlSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -98,13 +98,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type dk(dkSEXP);
     Rcpp::traits::input_parameter< int >::type nlambda(nlambdaSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type control(controlSEXP);
-    rcpp_result_gen = Rcpp::wrap(sefar_SURR_Rcpp(X, Y, Au, Av, bu, bv, uk, vk, dk, nlambda, control));
+    rcpp_result_gen = Rcpp::wrap(secure_SURR_Rcpp(X, Y, Au, Av, bu, bv, uk, vk, dk, nlambda, control));
     return rcpp_result_gen;
 END_RCPP
 }
-// sefar_SURR_Rcpp_ortho
-Rcpp::List sefar_SURR_Rcpp_ortho(arma::mat X, arma::mat Y, arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv, arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control);
-RcppExport SEXP secure_sefar_SURR_Rcpp_ortho(SEXP XSEXP, SEXP YSEXP, SEXP AuSEXP, SEXP AvSEXP, SEXP buSEXP, SEXP bvSEXP, SEXP ukSEXP, SEXP vkSEXP, SEXP dkSEXP, SEXP nlambdaSEXP, SEXP controlSEXP) {
+// secure_SURR_Rcpp_ortho
+Rcpp::List secure_SURR_Rcpp_ortho(arma::mat X, arma::mat Y, arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv, arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control);
+RcppExport SEXP secure_secure_SURR_Rcpp_ortho(SEXP XSEXP, SEXP YSEXP, SEXP AuSEXP, SEXP AvSEXP, SEXP buSEXP, SEXP bvSEXP, SEXP ukSEXP, SEXP vkSEXP, SEXP dkSEXP, SEXP nlambdaSEXP, SEXP controlSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -119,13 +119,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type dk(dkSEXP);
     Rcpp::traits::input_parameter< int >::type nlambda(nlambdaSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type control(controlSEXP);
-    rcpp_result_gen = Rcpp::wrap(sefar_SURR_Rcpp_ortho(X, Y, Au, Av, bu, bv, uk, vk, dk, nlambda, control));
+    rcpp_result_gen = Rcpp::wrap(secure_SURR_Rcpp_ortho(X, Y, Au, Av, bu, bv, uk, vk, dk, nlambda, control));
     return rcpp_result_gen;
 END_RCPP
 }
-// sefar_SURR_miss_Rcpp
-Rcpp::List sefar_SURR_miss_Rcpp(arma::mat X, arma::mat Y, arma::mat naInd, arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv, arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control);
-RcppExport SEXP secure_sefar_SURR_miss_Rcpp(SEXP XSEXP, SEXP YSEXP, SEXP naIndSEXP, SEXP AuSEXP, SEXP AvSEXP, SEXP buSEXP, SEXP bvSEXP, SEXP ukSEXP, SEXP vkSEXP, SEXP dkSEXP, SEXP nlambdaSEXP, SEXP controlSEXP) {
+// secure_SURR_miss_Rcpp
+Rcpp::List secure_SURR_miss_Rcpp(arma::mat X, arma::mat Y, arma::mat naInd, arma::mat Au, arma::mat Av, arma::vec bu, arma::vec bv, arma::vec uk, arma::vec vk, double dk, int nlambda, Rcpp::List control);
+RcppExport SEXP secure_secure_SURR_miss_Rcpp(SEXP XSEXP, SEXP YSEXP, SEXP naIndSEXP, SEXP AuSEXP, SEXP AvSEXP, SEXP buSEXP, SEXP bvSEXP, SEXP ukSEXP, SEXP vkSEXP, SEXP dkSEXP, SEXP nlambdaSEXP, SEXP controlSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -141,7 +141,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type dk(dkSEXP);
     Rcpp::traits::input_parameter< int >::type nlambda(nlambdaSEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type control(controlSEXP);
-    rcpp_result_gen = Rcpp::wrap(sefar_SURR_miss_Rcpp(X, Y, naInd, Au, Av, bu, bv, uk, vk, dk, nlambda, control));
+    rcpp_result_gen = Rcpp::wrap(secure_SURR_miss_Rcpp(X, Y, naInd, Au, Av, bu, bv, uk, vk, dk, nlambda, control));
     return rcpp_result_gen;
 END_RCPP
 }
