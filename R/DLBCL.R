@@ -12,8 +12,4 @@
 #' @keywords datasets
 #' @examples
 #' # data(DLBCL)
-#' # p <- nrow(DLBCL); q <- ncol(DLBCL); n <- nrow(DLBCL)
-#' # control <- secure.control(spU=0.95,spV=0.95)
-#' # fit.DLBCL <- secure.path(Y = DLBCL,X = NULL,nrank=10,nlambda = 100,
-#' #                         orthXU = TRUE, orthV = TRUE, control=control)
 "DLBCL"

@@ -1,4 +1,4 @@
-#' Sequential Co-Sparse Factor Regression (SeCURE)
+#' Sequential Co-Sparse Factor Regression
 #'
 #' Sequential factor extraction via co-sparse unit-rank estimation (SeCURE)
 #'
@@ -13,7 +13,7 @@
 #' @param orthV if TRUE, orthogonality of V is required
 #' @param keepPath if TRUE, th solution paths of U, V, D are reported
 #' @param control a list of internal parameters controlling the model fitting
-#' @param ic character specifying which information criterion to use to select the best: "GIC"(default), "BICP", and "AIC"
+#' @param ic character specifying which information criterion to use for selecting the tuning parameter: "GIC"(default), "BICP", and "AIC"
 #' @aliases secure
 #' @return 
 #'   \item{C.est}{estimated coefficient matrix; based on modified BIC}
@@ -55,10 +55,10 @@
 #' C <- U%*%D%*%t(V)
 #' 
 #' Xsigma <- xrho^abs(outer(1:p, 1:p,FUN="-"))
-#' sim.sample <- secure.sim(U,D,V,n,snr = 1,Xsigma)
+#' sim.sample <- secure.sim(U,D,V,n,snr = 0.25,Xsigma,rho=0.3)
 #' Y <- sim.sample$Y; 
 #' X <- sim.sample$X
-#' ##test.Y <- sim.sample$test.Y; test.X <- sim.sample$test.X
+#' 
 #' 
 #' 
 #' # Fitting secure. Set maximum rank to be 4.
@@ -71,7 +71,7 @@
 #' # Complete data case. 
 #' # Fit secure without orthogonality
 #' fit.orthF <- secure.path(Y,X,nrank=rank.ini,nlambda = nlambda,
-#'                         orthXU=FALSE,orthV=FALSE,control=control)
+#'                         control=control)
 #' # check orthogonality
 #' crossprod(X%*%fit.orthF$U)/n
 #' # check solution
@@ -80,7 +80,8 @@
 #' # fit.orthF$D
 #' 
 #' # Fit secure with orthogonality if desired. It takes longer time.
-#' # fit.orthT <- secure.path(Y,X,nrank=rank.ini,nlambda = nlambda,control=control)
+#' # fit.orthT <- secure.path(Y,X,nrank=rank.ini,nlambda = nlambda,
+#' #                                   orthXU=TRUE,orthV=TRUE,control=control)
 #' # check orthogonality
 #' # crossprod(X%*%fit.orthT$U)/n
 #' 
@@ -91,8 +92,9 @@
 #' y <- as.vector(Y); y[t.ind] <- NA;  Ym <- matrix(y,n,q)
 #' 
 #' fit.orthF.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda, 
-#'                              orthXU = FALSE, orthV = FALSE, control = control) 
-#' # fit.orthT.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda, control = control)
+#'                             control = control) 
+#' # fit.orthT.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda,
+#' #                           orthXU=TRUE,orthV=TRUE, control = control)
 #'@references 
 #' Mishra, A., Chen, K., & Dey, D. (2017) \emph{ Sequential Co-Sparse Factor Regression, To appear in Journal of Computational and Graphical Statistics (JCGS)}
 secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100, 
@@ -277,7 +279,7 @@ secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100,
 #' # Simulate data from a sparse factor regression model
 #' p <- 100; q <- 50; n <- 300
 #' snr <- 0.5; ssigma <- 0.5; nlambda <- 200 
-#' nrank <- 3 
+#' nrank <- 3
 #' 
 #' U <- matrix(0,ncol=nrank ,nrow=p);  V <- matrix(0,ncol=nrank ,nrow=q)
 #' U[,1]<-c(sample(c(1,-1),8,replace=TRUE),rep(0,p-8))

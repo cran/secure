@@ -34,7 +34,7 @@ genertate random samples from a sparse factor regression model
 # Simulate data from a sparse factor regression model
 p <- 100; q <- 50; n <- 300
 snr <- 0.5; ssigma <- 0.5; nlambda <- 200 
-nrank <- 3 
+nrank <- 3
 
 U <- matrix(0,ncol=nrank ,nrow=p);  V <- matrix(0,ncol=nrank ,nrow=q)
 U[,1]<-c(sample(c(1,-1),8,replace=TRUE),rep(0,p-8))

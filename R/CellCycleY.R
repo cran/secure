@@ -15,7 +15,7 @@
 #' # data(CellCycleY) # Y
 #' # data(CellCycleX) # X
 #' # n <- nrow(CellCycleY); p <- ncol(CellCycleX); q <-  ncol(CellCycleY)
-#' # control <- secure.control(spU=100/p,spV=1)
+#' # control <- secure.control(spU=160/p,spV=1)
 #' # fit.cycle <- secure.path(CellCycleY, CellCycleX, nrank = 10, nlambda = 100,
-#' #                   orthXU = FALSE, orthV = FALSE, control = control)
+#' #                   control = control)
 "CellCycleY"
