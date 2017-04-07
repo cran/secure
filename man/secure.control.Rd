@@ -14,7 +14,7 @@ secure.control(mu = 1, nu = 1.1, MMerr = 0.001, MMiter = 100,
 
 \item{nu}{penalty parameter used in enforcing orthogonality (incremental rate of mu)}
 
-\item{MMerr}{tolerence in the MM algorithm for computing initial values when missing value occurs}
+\item{MMerr}{tolerence in the majorization maximization(MM) algorithm for computing initial values when missing value occurs}
 
 \item{MMiter}{maximum number iterations in the MM algorithm}
 

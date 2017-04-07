@@ -117,6 +117,6 @@ fit.orthF.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda,
 #                           orthXU=TRUE,orthV=TRUE, control = control)
 }
 \references{
-Mishra, A., Chen, K., & Dey, D. (2017) \emph{ Sequential Co-Sparse Factor Regression, To appear in Journal of Computational and Graphical Statistics (JCGS)}
+Mishra, A., Dey, D., Chen, K. (2017) \emph{ Sequential Co-Sparse Factor Regression, To appear in Journal of Computational and Graphical Statistics (JCGS)}
 }
 

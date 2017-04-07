@@ -98,7 +98,7 @@
 #' # fit.orthT.miss <- secure.path(Ym, X, nrank = rank.ini, nlambda = nlambda,
 #' #                           orthXU=TRUE,orthV=TRUE, control = control)
 #'@references 
-#' Mishra, A., Chen, K., & Dey, D. (2017) \emph{ Sequential Co-Sparse Factor Regression, To appear in Journal of Computational and Graphical Statistics (JCGS)}
+#' Mishra, A., Dey, D., Chen, K. (2017) \emph{ Sequential Co-Sparse Factor Regression, To appear in Journal of Computational and Graphical Statistics (JCGS)}
 secure.path  = function(Y, X = NULL, nrank = 3, nlambda = 100, 
                        U0 = NULL, V0 = NULL, D0 = NULL, 
                        orthXU = FALSE, orthV = FALSE, 
@@ -360,7 +360,7 @@ secure.sim = function(U,D,V,n,snr,Xsigma,rho=0){
 #' 
 #' @param mu penalty parameter used in enforcing orthogonality
 #' @param nu penalty parameter used in enforcing orthogonality (incremental rate of mu)
-#' @param MMerr tolerence in the MM algorithm for computing initial values when missing value occurs
+#' @param MMerr tolerence in the majorization maximization(MM) algorithm for computing initial values when missing value occurs
 #' @param MMiter maximum number iterations in the MM algorithm
 #' @param outTol tolerence of convergence of outer loop in CURE
 #' @param outMaxIter maximum number of outer loop iteration in CURE
@@ -406,26 +406,59 @@ secure.control = function(mu=1.0, nu=1.1,
 #' #require(secure)
 #' Y <- matrix(rnorm(400), 100, 4)
 #' X <- matrix(rnorm(800), 100, 8)
-#' rfit <- rfit(Y, X, nrank = 3)
-rfit <- function(Y,X,nrank=nrank){
-  p <- ncol(X)
-  S_yx <- crossprod(Y, X)
+#' rrr.fit <- rrr.fit(Y, X, nrank = 3)
+rrr.fit <- function(Y,X,nrank=nrank){
+  n <- nrow(X);  p <- ncol(X) ;  q <- ncol(Y)  
+  naInd <- is.na(Y) 
+  Yk <- Y;#Yk[naInd] <- 0   
+  f=function(xxx){
+    xxx <- as.numeric(as.character(xxx)) #first convert each column into numeric if it is from factor
+    xxx[is.na(xxx)] <- mean(xxx, na.rm=TRUE) #convert the item with NA to median value from the column
+    xxx #display the column
+  }
+  Yk <- apply(Yk,2,f) 
+  
+  
+  S_yx <- crossprod(Yk, X)
   S_xx <- crossprod(X)
   S_xx_inv <- tryCatch(ginv(S_xx), error = function(e) solve(S_xx + 
-                                                                diag(1e-3,nrow=p,ncol=p)))
+                                                               diag(1e-3,nrow=p,ncol=p)))
   C_ls <- tcrossprod(S_xx_inv, S_yx)
   XC <- X %*% C_ls
   svdXC <- svd(XC, nrank, nrank)
   A <- svdXC$v[, 1:nrank]
   Ad <- (svdXC$d[1:nrank])^2
   AA <- tcrossprod(A)
-  C_rr <- C_ls %*% AA
+  Ck <- C_rr <- C_ls %*% AA
   
+  if(sum(naInd)>0 ){
+    counter <- 0
+    repeat{
+      counter <- counter+1    
+      Yk[naInd] <- crossprod(t(X),Ck)[naInd] 
+      
+      S_yx <- crossprod(Yk, X)
+      S_xx <- crossprod(X)
+      S_xx_inv <- tryCatch(ginv(S_xx), error = function(e) solve(S_xx + 
+                                                                   diag(1e-3,nrow=p,ncol=p)))
+      C_ls <- tcrossprod(S_xx_inv, S_yx)
+      XC <- X %*% C_ls
+      svdXC <- svd(XC, nrank, nrank)
+      A <- svdXC$v[, 1:nrank]
+      Ad <- (svdXC$d[1:nrank])^2
+      AA <- tcrossprod(A)
+      Cc <- C_ls %*% AA
+      
+      error <- norm(Cc-Ck,'f') / norm(Ck,'f')   
+      if ( error < 0.001 | counter>100) {break} else Ck <- Cc        
+    }
+    C_rr <- Cc
+  } 
+
   # coefSVD <- svd(C_rr, nrank, nrank)
   # D <- diag(coefSVD$d[1:nrank])
   # U <- coefSVD$u[, 1:nrank, drop = FALSE]
   # V <- coefSVD$v[, 1:nrank, drop = FALSE]
-  
   return(list(coef=C_rr))
 }
 
@@ -490,9 +523,9 @@ secure.init <- function(Y, X, U0 = NULL, V0 = NULL, D0 = NULL,nrank = 4,ort) {
 ## 
 ## @param Y response matrix
 ## @param X covariate matrix
-## @param U0 user-supplied initial value of U. Currently not used.
-## @param V0 user-supplied initial value of V. Currently not used.
-## @param D0 user-supplied initial value of D. Currently not used.
+## @param U0 user-supplied initial value of U.
+## @param V0 user-supplied initial value of V. 
+## @param D0 user-supplied initial value of D. 
 ## @param nrank an integer specifying the desired rank
 ## @param control internal control parameters
 ## @param method method = 1, least squares; method = 2, reduced rank regression 
@@ -508,7 +541,7 @@ secure.miss.init = function (Y, X, U0 = NULL, V0 = NULL, D0 = NULL, nrank, contr
   naInd <- is.na(Y) 
   Yk <- Y;#Yk[naInd] <- 0   
   f=function(xxx){
-    xxx < -as.numeric(as.character(xxx)) #first convert each column into numeric if it is from factor
+    xxx <- as.numeric(as.character(xxx)) #first convert each column into numeric if it is from factor
     xxx[is.na(xxx)] <- mean(xxx, na.rm=TRUE) #convert the item with NA to median value from the column
     xxx #display the column
   }
@@ -517,7 +550,7 @@ secure.miss.init = function (Y, X, U0 = NULL, V0 = NULL, D0 = NULL, nrank, contr
   # U0 <- V0 <- D0 <- NULL
   U <- V <- D <- NULL
   if(is.null(U0) | is.null(V0) | is.null(D0)){
-    Ck <- rfit(Yk,X,nrank=nrank)$coef
+    Ck <- rrr.fit(Yk,X,nrank=nrank)$coef
     
     counter <- 0
     repeat{
@@ -527,7 +560,7 @@ secure.miss.init = function (Y, X, U0 = NULL, V0 = NULL, D0 = NULL, nrank, contr
         Cc <- tcrossprod(ginv(crossprod(X)),X)%*%Yk
         
       } else {            # RRR method 
-        fit.RRR <- rfit(Yk,X,nrank=nrank)
+        fit.RRR <- rrr.fit(Yk,X,nrank=nrank)
         Cc <- fit.RRR$coef
       }
       error <- norm(Cc-Ck,'f') / norm(Ck,'f')   
