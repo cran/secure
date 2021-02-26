@@ -1,8 +1,8 @@
 Package: secure
 Type: Package
 Title: Sequential Co-Sparse Factor Regression
-Version: 0.5
-Date: 2017-03-24
+Version: 0.6
+Date: 2021-02-22
 Author: Aditya Mishra [aut, cre], Kun Chen [aut, cre]
 Maintainer: Aditya Mishra <aditya.mishra@uconn.edu>
 Description: Sequential factor extraction via co-sparse unit-rank estimation (SeCURE).
@@ -13,6 +13,6 @@ LazyData: TRUE
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
 RoxygenNote: 5.0.1
-Packaged: 2017-04-07 14:12:19 UTC; Aditya
+Packaged: 2021-02-26 03:13:37 UTC; amishra
 Repository: CRAN
-Date/Publication: 2017-04-07 17:01:28 UTC
+Date/Publication: 2021-02-26 10:10:02 UTC
